@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PyWebIO Playground: Edit, Run, Share PyWebIO Code Online</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #efefef;
+        }
+
+        .main {
+            display: grid;
+            grid-template-columns: 1fr 80px 1fr;
+            height: calc(100vh - 80px);
+        }
+
+
+        .tools {
+            margin: 0 auto;
+        }
+
+        button {
+            border-width: 0px;
+            opacity: .9;
+            transition: all 0.3s;
+            padding: 12px !important;
+            color: #ffffff;
+            display: inline-flex;
+            justify-content: center;
+            -webkit-box-pack: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            border-radius: 24px;
+            -webkit-box-orient: horizontal;
+            -webkit-box-direction: reverse;
+            flex-direction: row-reverse;
+            letter-spacing: normal;
+            position: relative;
+            z-index: 1;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            cursor: pointer;
+            text-align: center;
+            white-space: nowrap;
+            -webkit-transition: color 100ms, background-color 100ms, border-color 100ms;
+            transition: color 100ms, background-color 100ms, border-color 100ms;
+            overflow: visible;
+            margin: 0;
+        }
+
+        .button-run > button:hover {
+            background-color: #1571e7;
+        }
+
+        .button-run > button {
+            background: #167dff;
+        }
+
+        .button-other > button {
+            border-width: 1px;
+            border-color: grey;
+
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+<h2>Play with PyWebIO</h2>
+<div class="main">
+    <div id="container" style=" margin-bottom: 10px; border:1px solid grey"></div>
+    <div class="tools">
+        <div class="button-run">
+            <button data-test="button" type="button" onclick="run_code()">
+                <svg style="color:white" width="24" height="24" viewBox="0 0 24 24">
+                    <path d="M22.0013,12.0016,6.002,21.0029V3Z" fill="currentColor"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+    <div id="pywebio-app" style="margin-bottom: 10px; border:1px solid grey">
+        <iframe src="http://localhost:8080" frameborder="0"></iframe>
+    </div>
+</div>
+<script src="../lib/main.bundle.js"></script>
+<script>
+    editor.setValue(`
+from pywebio.input import *
+from pywebio.output import *
+from pywebio.pin import *
+from pywebio import session
+
+name = input("what's your name?")
+put_text("hello", name)
+    `.trim());
+    editor.updateOptions({
+fontSize:20
+    });
+    let pywebio_app = document.querySelector('#pywebio-app>iframe');
+
+    function utf8_to_b64(str) {
+        return window.btoa(unescape(encodeURIComponent(str)));
+    }
+
+    function run_code() {
+        let code = editor.getValue();
+        console.log(code);
+        pywebio_app.src = "http://localhost:8080/?code="+utf8_to_b64(code);
+    }
+</script>
+</body>
+</html>
