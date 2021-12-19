@@ -1,0 +1,28 @@
+# setup python language server
+kind: pipeline
+type: exec
+name: default
+
+clone:
+  disable: true
+
+trigger:
+  branch:
+  - language-server
+  event:
+  - push
+
+steps:
+  - name: deploy
+    commands:
+      - |  # https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#pipe-dockerfile-through-stdin
+        docker build -t pywebio-language-server -f- . <<EOF
+        FROM python:3
+        WORKDIR /usr/src/app
+        ADD ./server .
+        RUN pip3 install --no-cache-dir -r requirements.txt
+        EXPOSE 8080
+        CMD python3 language_server.py
+        EOF
+      - docker rm -f pywebio-language-server || true
+      - docker run --restart=always --name=language-server --memory="1g" --memory-swap="1g" --cpus="2" -d pywebio-language-server
