@@ -23,21 +23,21 @@ class LanguageServerWebSocketHandler(websocket.WebSocketHandler):
         log.info("Spawning pylsp subprocess")
 
         # Create an instance of the language server
-        proc = process.Subprocess(
-            ['pylsp', '-v'],
+        self.proc = process.Subprocess(
+            ['pylsp'],
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE
         )
 
         # Create a writer that formats json messages with the correct LSP headers
-        self.writer = streams.JsonRpcStreamWriter(proc.stdin)
+        self.writer = streams.JsonRpcStreamWriter(self.proc.stdin)
 
         # Create a reader for consuming stdout of the language server. We need to
         # consume this in another thread
         def consume():
             # Start a tornado IOLoop for reading/writing to the process in this thread
             ioloop.IOLoop()
-            reader = streams.JsonRpcStreamReader(proc.stdout)
+            reader = streams.JsonRpcStreamReader(self.proc.stdout)
             reader.listen(lambda msg: self.write_message(json.dumps(msg)))
 
         thread = threading.Thread(target=consume)
@@ -50,6 +50,9 @@ class LanguageServerWebSocketHandler(websocket.WebSocketHandler):
 
     def check_origin(self, origin):
         return True
+
+    def on_close(self):
+        self.proc.proc.kill()
 
 
 if __name__ == "__main__":
