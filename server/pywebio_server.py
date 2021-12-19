@@ -4,8 +4,10 @@ import traceback
 import sys
 
 from pywebio import start_server
-from pywebio.output import put_info, popup, put_error, PopupSize
-from pywebio.session import local as session_local, eval_js
+from pywebio.output import popup, put_error, PopupSize
+from pywebio.session import local as session_local, eval_js, run_js
+
+referrer_white_list = ('http://localhost:63342/', 'https://play.pywebio.online/')
 
 
 def on_task_exception():
@@ -25,11 +27,15 @@ def on_task_exception():
 
 def main():
     session_local.globals = dict()
-    code = eval_js("new URLSearchParams(window.location.search).get('code')") or ''
-    code = base64.b64decode(code)
+    b64code = eval_js("new URLSearchParams(window.location.search).get('code')") or ''
+    code = base64.b64decode(b64code)
+
+    if eval_js("document.referrer") not in referrer_white_list:
+        return run_js('location.href=url', url='https://play.pywebio.online/#' + b64code)
 
     if not code:
-        return put_info("Click Run button to start.")
+        return
+
     try:
         exec(code, {})
     except Exception:
