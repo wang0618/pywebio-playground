@@ -125,6 +125,10 @@ put_info("Modify the code and click Run button to start.")
 
     function run_code() {
         let code = editor.getValue();
+        if(code.trim().length===0){
+            editor.setValue(init_code);
+            code = init_code;
+        }
         let b64 = utf8_to_b64(code);
         location.hash = '#' + b64;
         pywebio_app.src = language_server_address + "/?code=" + b64;
