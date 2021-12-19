@@ -16,7 +16,7 @@ jobs:
       - name: Move web branch to master
         run: |
           git fetch --unshallow origin
-          git reset --hard master || exit 0
+          git reset --hard origin/master
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
@@ -26,7 +26,9 @@ jobs:
         run: |
           yarn
           yarn prepare
+          rm -rf ../docs
           mv lib ../docs
+          echo "play.pywebio.online" > ../docs/CNAME
       - name: Push
         run: |
           git config --global user.email "wang0.618@qq.com"
