@@ -27,7 +27,6 @@ def main():
     session_local.globals = dict()
     code = eval_js("new URLSearchParams(window.location.search).get('code')") or ''
     code = base64.b64decode(code)
-    print(code)
 
     if not code:
         return put_info("Click Run button to start.")
