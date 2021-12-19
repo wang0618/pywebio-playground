@@ -114,7 +114,7 @@ fontSize:20
     function run_code() {
         let code = editor.getValue();
         console.log(code);
-        pywebio_app.src = "http://localhost:8080/?code="+utf8_to_b64(code);
+        pywebio_app.src = "https://server.pywebio.online/?code="+utf8_to_b64(code);
     }
 </script>
 </body>

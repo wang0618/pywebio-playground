@@ -16,7 +16,7 @@ jobs:
       - name: Move web branch to master
         run: |
           git fetch --unshallow origin
-          git reset --hard master
+          git reset --hard master || exit 0
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
