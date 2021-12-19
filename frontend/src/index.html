@@ -93,31 +93,44 @@
 </div>
 <script src="./main.bundle.js"></script>
 <script>
-    editor.setValue(`
+    function b64_to_utf8(str) {
+        return decodeURIComponent(escape(window.atob(str)));
+    }
+
+    function utf8_to_b64(str) {
+        return window.btoa(unescape(encodeURIComponent(str)));
+    }
+
+    const init_code = `
 from pywebio.input import *
 from pywebio.output import *
 from pywebio.pin import *
 from pywebio import session
 
-name = input("what's your name?")
-put_text("hello", name)
-    `.trim());
+put_info("Modify the code and click Run button to start.")
+`.trim();
+    if (location.hash.length > 1) {
+        editor.setValue(b64_to_utf8(location.hash.slice(1)));
+    } else {
+        editor.setValue(init_code);
+    }
+
     editor.updateOptions({
-fontSize:20
+        fontSize: 20
     });
     let pywebio_app = document.querySelector('#pywebio-app>iframe');
-
-    function utf8_to_b64(str) {
-        return window.btoa(unescape(encodeURIComponent(str)));
-    }
 
     const language_server_address = "https://server.pywebio.online";
     pywebio_app.src = language_server_address;
 
     function run_code() {
         let code = editor.getValue();
-        pywebio_app.src = language_server_address+"/?code="+utf8_to_b64(code);
+        let b64 = utf8_to_b64(code);
+        location.hash = '#' + b64;
+        pywebio_app.src = language_server_address + "/?code=" + b64;
     }
+
+    run_code();
 </script>
 </body>
 </html>
