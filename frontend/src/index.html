@@ -51,20 +51,23 @@
             transition: color 100ms, background-color 100ms, border-color 100ms;
             overflow: visible;
             margin: 0;
+            margin-bottom: 15px;
         }
 
         .button-run > button:hover {
-            background-color: #1571e7;
+            background-color: #0d8050;
         }
 
         .button-run > button {
-            background: #167dff;
+            background: #0f9960;
         }
 
         .button-other > button {
-            border-width: 1px;
-            border-color: grey;
+            background: #167dff;
+        }
 
+        .button-other > button:hover {
+            background-color: #1571e7;
         }
 
         iframe {
@@ -86,6 +89,14 @@
                 </svg>
             </button>
         </div>
+        <div class="button-other">
+            <button data-test="button" type="button" onclick="share()">
+                <svg style="color:white" width="24" height="24" viewBox="0 0 24 24">
+                    <path fill="#FFF"
+                          d="M16.9997,9.5001A2.9838,2.9838,0,0,1,14.922,8.657l-4.8885,2.4441-1.1613.5806a2.688,2.688,0,0,1,0,1.6367l6.0498,3.0247a2.995,2.995,0,1,1-.9222,2.157,2.94566,2.94566,0,0,1,.0366-.3636L7.7007,14.9684a2.9999,2.9999,0,1,1,0-4.9368l6.3357-3.1681A2.944,2.944,0,0,1,13.9998,6.5a3,3,0,1,1,2.9999,3.0001Z"></path>
+                </svg>
+            </button>
+        </div>
     </div>
     <div id="pywebio-app" style="margin-bottom: 10px; border:1px solid grey">
         <iframe frameborder="0"></iframe>
@@ -93,6 +104,10 @@
 </div>
 <script src="./main.bundle.js"></script>
 <script>
+    const language_server_address = "https://server.pywebio.online";
+    const share_api = "https://s.pywebio.online/";  // keep suffix '/'
+
+
     function b64_to_utf8(str) {
         return decodeURIComponent(escape(window.atob(str)));
     }
@@ -120,12 +135,11 @@ put_info("Modify the code and click Run button to start.")
     });
     let pywebio_app = document.querySelector('#pywebio-app>iframe');
 
-    const language_server_address = "https://server.pywebio.online";
     pywebio_app.src = language_server_address;
 
     function run_code() {
         let code = editor.getValue();
-        if(code.trim().length===0){
+        if (code.trim().length === 0) {
             editor.setValue(init_code);
             code = init_code;
         }
@@ -135,6 +149,24 @@ put_info("Modify the code and click Run button to start.")
     }
 
     run_code();
+
+    function share() {
+        let code = editor.getValue();
+        let b64 = utf8_to_b64(code);
+        fetch(share_api, {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            body: b64
+        }).then((response) => {
+            response.json().then(data => {
+                prompt("Share URL(the url will be expired after 365 days):", share_api + data.key);
+            });
+        }).catch((e)=>{
+            location.hash = '#' + b64;
+            alert('Fail to generate short link for sharing, you can just copy current url to share');
+        });
+    }
 </script>
 </body>
 </html>
