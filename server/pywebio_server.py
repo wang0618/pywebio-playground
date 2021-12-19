@@ -1,13 +1,15 @@
 import base64
-import traceback
-
 import sys
+import traceback
+from urllib.parse import urlparse
 
 from pywebio import start_server
 from pywebio.output import popup, put_error, PopupSize
 from pywebio.session import local as session_local, eval_js, run_js
 
-referrer_white_list = ('http://localhost:63342/', 'https://play.pywebio.online/')
+referrer_host_white_list = ('localhost', 'play.pywebio.online')
+play_ground_url = 'https://play.pywebio.online/#'
+
 
 
 def on_task_exception():
@@ -30,8 +32,10 @@ def main():
     b64code = eval_js("new URLSearchParams(window.location.search).get('code')") or ''
     code = base64.b64decode(b64code)
 
-    if eval_js("document.referrer") not in referrer_white_list:
-        return run_js('location.href=url', url='https://play.pywebio.online/#' + b64code)
+    referrer = urlparse(eval_js("document.referrer"))
+
+    if referrer.hostname not in referrer_host_white_list:
+        return run_js('location.href=url', url=play_ground_url + b64code)
 
     if not code:
         return
