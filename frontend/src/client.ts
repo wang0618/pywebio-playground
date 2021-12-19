@@ -298,7 +298,7 @@ window.editor = editor;
 MonacoServices.install(monaco);
 
 // create the web socket
-const url = createUrl('/python')
+const url = languageServerUrl();
 const webSocket = createWebSocket(url);
 // listen when the web socket is opened
 listen({
@@ -332,9 +332,9 @@ function createLanguageClient(connection: MessageConnection): MonacoLanguageClie
     });
 }
 
-function createUrl(path: string): string {
+function languageServerUrl(): string {
     const protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-    return normalizeUrl(`${protocol}://localhost:3001${path}`);
+    return normalizeUrl(`${protocol}://language-server.pywebio.online/python`);
 }
 
 function createWebSocket(url: string): WebSocket {
