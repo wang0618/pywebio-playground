@@ -3,9 +3,6 @@ kind: pipeline
 type: exec
 name: default
 
-clone:
-  disable: true
-
 trigger:
   branch:
   - language-server
@@ -24,5 +21,5 @@ steps:
         EXPOSE 8080
         CMD python3 language_server.py
         EOF
-      - docker rm -f pywebio-language-server || true
+      - docker rm -f language-server || exit 0
       - docker run --restart=always --name=language-server --memory="1g" --memory-swap="1g" --cpus="2" -d pywebio-language-server
