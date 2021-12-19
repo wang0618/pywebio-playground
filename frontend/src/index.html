@@ -88,7 +88,7 @@
         </div>
     </div>
     <div id="pywebio-app" style="margin-bottom: 10px; border:1px solid grey">
-        <iframe src="http://localhost:8080" frameborder="0"></iframe>
+        <iframe frameborder="0"></iframe>
     </div>
 </div>
 <script src="./main.bundle.js"></script>
@@ -111,10 +111,13 @@ fontSize:20
         return window.btoa(unescape(encodeURIComponent(str)));
     }
 
+    const language_server_address = "https://server.pywebio.online";
+    pywebio_app.src = language_server_address;
+
     function run_code() {
         let code = editor.getValue();
         console.log(code);
-        pywebio_app.src = "https://server.pywebio.online/?code="+utf8_to_b64(code);
+        pywebio_app.src = language_server_address+"/?code="+utf8_to_b64(code);
     }
 </script>
 </body>
