@@ -129,6 +129,7 @@ put_info("Modify the code and click Run button to start.")
     } else {
         editor.setValue(init_code);
     }
+    editor.addCommand(2097, () => run_code()); // 2097 == monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS
 
     editor.updateOptions({
         fontSize: 18,
