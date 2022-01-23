@@ -147,7 +147,7 @@ put_info("Modify the code and click Run button to start.")
         }
         let b64 = utf8_to_b64(code);
         location.hash = '#' + b64;
-        pywebio_app.src = language_server_address + "/?code=" + b64;
+        pywebio_app.src = language_server_address + "/?code=" + encodeURIComponent(b64);
     }
 
     run_code();
