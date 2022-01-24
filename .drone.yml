@@ -22,4 +22,5 @@ steps:
         CMD python3 language_server.py
         EOF
       - docker rm -f language-server || exit 0
-      - docker run --restart=always --name=language-server --memory="1g" --memory-swap="1g" --cpus="2" -d pywebio-language-server
+      # make `memory-swap` same as `memory-` to disable swap
+      - docker run --restart=always --name=language-server --memory="2g" --memory-swap="2g" --cpus="2" -d pywebio-language-server
