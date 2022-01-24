@@ -130,6 +130,7 @@ put_info("Modify the code and click Run button to start.")
         editor.setValue(init_code);
     }
     editor.addCommand(2097, () => run_code()); // 2097 == monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS
+    editor.addCommand(522, () => editor.trigger('', 'editor.action.triggerSuggest', {})); // 522 == monaco.KeyMod.Alt | monaco.KeyCode.Space
 
     editor.updateOptions({
         fontSize: 18,
