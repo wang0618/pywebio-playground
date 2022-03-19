@@ -1,3 +1,10 @@
+/*
+* Cloudflare Workers
+* URL shorter service for PyWebIO playground
+*
+* Require: Set `KVStore` as KV namespace of the Workers: https://developers.cloudflare.com/workers/runtime-apis/kv#kv-bindings
+* */
+
 addEventListener("fetch", (event) => {
     event.respondWith(
         handleRequest(event.request).catch(

@@ -19,7 +19,7 @@ steps:
         ADD ./server .
         RUN pip3 install --no-cache-dir -r requirements.txt
         EXPOSE 8080
-        CMD python3 language_server.py
+        CMD pylsp --ws --host 0.0.0.0 --port 8080
         EOF
       - docker rm -f language-server || exit 0
       # make `memory-swap` same as `memory-` to disable swap

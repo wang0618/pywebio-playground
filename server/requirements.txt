@@ -1,3 +1,6 @@
-python-lsp-jsonrpc
-python-lsp-server[yapf,rope]
+git+https://github.com/npradeep357/python-lsp-server.git@develop
+autobahn[twisted,accelerate]>=22.1.1
+service-identity
+yapf
+rope
 pywebio
