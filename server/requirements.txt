@@ -1,4 +1,4 @@
-git+https://github.com/npradeep357/python-lsp-server.git@develop
+python-lsp-server[websockets]
 autobahn[twisted,accelerate]>=22.1.1
 service-identity
 yapf
