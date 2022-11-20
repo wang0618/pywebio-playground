@@ -74,35 +74,61 @@
             width: 100%;
             height: 100%;
         }
+
+        /* Tooltip container */
+        .tooltip {
+          position: relative;
+        }
+
+        /* Tooltip text */
+        .tooltip .tooltiptext {
+          visibility: hidden;
+          width: 120px;
+          background-color: black;
+          color: #fff;
+          text-align: center;
+          padding: 5px 0;
+          margin-left: 5px;
+          border-radius: 6px;
+          position: absolute;
+          z-index: 1;
+        }
+
+        /* Show the tooltip text when you mouse over the tooltip container */
+        .tooltip:hover .tooltiptext {
+          visibility: visible;
+        }
     </style>
 </head>
 
 <body>
-<h2>Play with PyWebIO</h2>
+<h2 style="padding-left: 10px; color: #404040;">Play with <a href="https://pywebio.readthedocs.io/" target="_blank" style="color: #2980B9;text-decoration: none;">PyWebIO</a></h2>
 <div class="main">
-    <div id="container" style=" margin-bottom: 10px; border:1px solid grey"></div>
+    <div id="container" style="margin-bottom: 10px; border:1px solid grey"></div>
     <div class="tools">
-        <div class="button-run">
+        <div class="button-run tooltip">
             <button data-test="button" type="button" onclick="run_code()">
                 <svg style="color:white" width="24" height="24" viewBox="0 0 24 24">
                     <path d="M22.0013,12.0016,6.002,21.0029V3Z" fill="currentColor"></path>
                 </svg>
             </button>
+            <span class="tooltiptext">Run Code (CTRL/⌘+S)</span>
         </div>
-        <div class="button-other">
+        <div class="button-other tooltip">
             <button data-test="button" type="button" onclick="share()">
                 <svg style="color:white" width="24" height="24" viewBox="0 0 24 24">
                     <path fill="#FFF"
                           d="M16.9997,9.5001A2.9838,2.9838,0,0,1,14.922,8.657l-4.8885,2.4441-1.1613.5806a2.688,2.688,0,0,1,0,1.6367l6.0498,3.0247a2.995,2.995,0,1,1-.9222,2.157,2.94566,2.94566,0,0,1,.0366-.3636L7.7007,14.9684a2.9999,2.9999,0,1,1,0-4.9368l6.3357-3.1681A2.944,2.944,0,0,1,13.9998,6.5a3,3,0,1,1,2.9999,3.0001Z"></path>
                 </svg>
             </button>
+            <span class="tooltiptext" style="top: 9px">Share Code</span>
         </div>
     </div>
     <div id="pywebio-app" style="margin-bottom: 10px; border:1px solid grey">
         <iframe frameborder="0"></iframe>
     </div>
 </div>
-<script src="./main.bundle.js"></script>
+<script src="../lib/main.bundle.js"></script>
 <script>
     const language_server_address = "https://server.pywebio.online";
     const share_api = "https://s.pywebio.online/";  // keep suffix '/'
@@ -163,7 +189,7 @@ put_info("Modify the code and click Run button to start.")
             body: b64
         }).then((response) => {
             response.json().then(data => {
-                prompt("Share URL(the url will be expired after 365 days):", share_api + data.key);
+                prompt("Copy to clipboard: CTRL/⌘+C:", share_api + data.key);
             });
         }).catch((e)=>{
             location.hash = '#' + b64;
