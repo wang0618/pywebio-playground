@@ -25,7 +25,7 @@ async function md5(message) {
 }
 
 const PLAYGROUND_ADDRESS = "https://play.pywebio.online"  // Attention: no '/' subfix needed.
-const expirationTtl = 3600 * 24 * 365
+// const expirationTtl = 3600 * 24 * 365
 
 const cors_headers = {
     headers: {
@@ -47,7 +47,8 @@ async function handleRequest(request) {
     if (request.method === 'POST') {
         let content = await request.text();
         let key = await md5(content);
-        await KVStore.put(key, content, {expirationTtl});
+        // await KVStore.put(key, content, {expirationTtl});
+        await KVStore.put(key, content);
         return new Response(JSON.stringify({key}), cors_headers);
     }
 
