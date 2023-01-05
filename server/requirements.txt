@@ -4,3 +4,4 @@ service-identity
 yapf
 rope
 pywebio
+https://github.com/pywebio/pywebio-battery/archive/refs/heads/master.zip
