@@ -159,7 +159,7 @@ put_info("Modify the code and click Run button to start.")
     editor.addCommand(597, () => editor.trigger('', 'editor.action.triggerSuggest', {})); // 597 == monaco.KeyMod.Alt | monaco.KeyCode.Slash
 
     editor.updateOptions({
-        fontSize: 18,
+        fontSize: 14,
         wordWrap: "on"
     });
     let pywebio_app = document.querySelector('#pywebio-app>iframe');
@@ -189,7 +189,7 @@ put_info("Modify the code and click Run button to start.")
             body: b64
         }).then((response) => {
             response.json().then(data => {
-                prompt("Copy to clipboard: CTRL/⌘+C:", share_api + data.key);
+                prompt("Copy to clipboard (CTRL/⌘+C):", share_api + data.key);
             });
         }).catch((e)=>{
             location.hash = '#' + b64;
