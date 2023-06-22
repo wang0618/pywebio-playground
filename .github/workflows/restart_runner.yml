@@ -10,7 +10,11 @@ jobs:
     name: Trigger Site Rebuild
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@master
       - uses: superfly/flyctl-actions/setup-flyctl@master
-      - run: flyctl apps restart -a pywebio-server
+      - run: |
+          cd server
+          flyctl apps restart pywebio-server
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
