@@ -4,3 +4,4 @@ service-identity
 yapf
 rope
 pywebio
+pywebio_battery
