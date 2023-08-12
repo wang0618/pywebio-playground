@@ -159,7 +159,7 @@ put_info("Modify the code and click Run button to start.")
     editor.addCommand(597, () => editor.trigger('', 'editor.action.triggerSuggest', {})); // 597 == monaco.KeyMod.Alt | monaco.KeyCode.Slash
 
     editor.updateOptions({
-        fontSize: 14,
+        fontSize: 16,
         wordWrap: "on"
     });
     let pywebio_app = document.querySelector('#pywebio-app>iframe');
