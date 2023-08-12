@@ -334,7 +334,7 @@ function createLanguageClient(connection: MessageConnection): MonacoLanguageClie
 
 function languageServerUrl(): string {
     const protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-    return normalizeUrl(`${protocol}://language-server.pywebio.online`);
+    return normalizeUrl(`${protocol}://pywebio-lsp.fly.dev`);
 }
 
 function createWebSocket(url: string): WebSocket {
