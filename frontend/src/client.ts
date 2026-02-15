@@ -11,6 +11,7 @@ import {
 } from '@codingame/monaco-languageclient';
 import normalizeUrl = require('normalize-url');
 const ReconnectingWebSocket = require('reconnecting-websocket');
+import { PYTHON_VERSION, PYWEBIO_VERSION } from './consts';
 
 // @ts-ignore
 let py_model = {
@@ -223,51 +224,51 @@ let py_model = {
     }
 };
 let conf = {
-	comments: {
-		lineComment: '#',
-		blockComment: ["'''", "'''"]
-	},
-	brackets: [
-		['{', '}'],
-		['[', ']'],
-		['(', ')']
-	],
-	autoClosingPairs: [
-		{ open: '{', close: '}' },
-		{ open: '[', close: ']' },
-		{ open: '(', close: ')' },
-		{ open: '"', close: '"', notIn: ['string'] },
-		{ open: "'", close: "'", notIn: ['string', 'comment'] }
-	],
-	surroundingPairs: [
-		{ open: '{', close: '}' },
-		{ open: '[', close: ']' },
-		{ open: '(', close: ')' },
-		{ open: '"', close: '"' },
-		{ open: "'", close: "'" }
-	],
-	onEnterRules: [
-		{
-			beforeText: new RegExp(
-				'^\\s*(?:def|class|for|if|elif|else|while|try|with|finally|except|async).*?:\\s*$'
-			),
-			action: { indentAction: languages.IndentAction.Indent }
-		}
-	],
-	folding: {
-		offSide: true,
-		markers: {
-			start: new RegExp('^\\s*#region\\b'),
-			end: new RegExp('^\\s*#endregion\\b')
-		}
-	}
+    comments: {
+        lineComment: '#',
+        blockComment: ["'''", "'''"]
+    },
+    brackets: [
+        ['{', '}'],
+        ['[', ']'],
+        ['(', ')']
+    ],
+    autoClosingPairs: [
+        { open: '{', close: '}' },
+        { open: '[', close: ']' },
+        { open: '(', close: ')' },
+        { open: '"', close: '"', notIn: ['string'] },
+        { open: "'", close: "'", notIn: ['string', 'comment'] }
+    ],
+    surroundingPairs: [
+        { open: '{', close: '}' },
+        { open: '[', close: ']' },
+        { open: '(', close: ')' },
+        { open: '"', close: '"' },
+        { open: "'", close: "'" }
+    ],
+    onEnterRules: [
+        {
+            beforeText: new RegExp(
+                '^\\s*(?:def|class|for|if|elif|else|while|try|with|finally|except|async).*?:\\s*$'
+            ),
+            action: { indentAction: languages.IndentAction.Indent }
+        }
+    ],
+    folding: {
+        offSide: true,
+        markers: {
+            start: new RegExp('^\\s*#region\\b'),
+            end: new RegExp('^\\s*#endregion\\b')
+        }
+    }
 };
 
 // register Monaco languages
 monaco.languages.register({
-  id: "python",
-  extensions: [".py", ".pyc", ".pyw", "pyo", "pyd"],
-  aliases: ["python", "py"]
+    id: "python",
+    extensions: [".py", ".pyc", ".pyw", "pyo", "pyd"],
+    aliases: ["python", "py"]
 });
 
 monaco.languages.setMonarchTokensProvider('python', py_model as any);
@@ -309,7 +310,7 @@ let editor = monaco.editor.create(document.getElementById("container")!, {
         value,
         "python",
         monaco.Uri.parse("inmemory://model.py")
-      ),
+    ),
     lightbulb: {
         enabled: true
     }
@@ -318,6 +319,12 @@ let editor = monaco.editor.create(document.getElementById("container")!, {
 
 // @ts-ignore
 window.editor = editor;
+
+// Update version info in footer
+const footer = document.querySelector('.editor-footer');
+if (footer) {
+    footer.innerHTML = `Python ${PYTHON_VERSION} <span class="footer-separator"></span> PyWebIO ${PYWEBIO_VERSION}`;
+}
 
 // install Monaco language client services
 // https://github.com/TypeFox/monaco-languageclient/issues/283
