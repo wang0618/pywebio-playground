@@ -276,9 +276,35 @@ monaco.languages.setLanguageConfiguration('python', conf as any);
 // create Monaco editor
 const value = `import pywebio`;
 
+// Define a custom light theme
+monaco.editor.defineTheme('pywebio-light', {
+    base: 'vs',
+    inherit: true,
+    rules: [
+        { token: 'comment', foreground: '6b7280', fontStyle: 'italic' },
+        { token: 'keyword', foreground: '8b5cf6' },
+        { token: 'string', foreground: '059669' },
+        { token: 'number', foreground: 'dc2626' },
+        { token: 'identifier', foreground: '1e293b' },
+        { token: 'tag', foreground: 'ea580c' },
+    ],
+    colors: {
+        'editor.background': '#ffffff',
+        'editor.foreground': '#1e293b',
+        'editor.lineHighlightBackground': '#f8fafc',
+        'editorLineNumber.foreground': '#94a3b8',
+        'editorLineNumber.activeForeground': '#64748b',
+        'editor.selectionBackground': '#c7d2fe',
+        'editor.inactiveSelectionBackground': '#e0e7ff',
+        'editorCursor.foreground': '#6366f1',
+        'editorIndentGuide.background': '#e2e8f0',
+        'editorIndentGuide.activeBackground': '#cbd5e1',
+    }
+});
 
 let editor = monaco.editor.create(document.getElementById("container")!, {
     language: 'python',
+    theme: 'pywebio-light',
     model: monaco.editor.createModel(
         value,
         "python",
